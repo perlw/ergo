@@ -18,32 +18,60 @@ var (
 
 var gamePrompt = []byte("\r\n> ")
 
+type GameRoom struct {
+	Brief       string
+	Description string
+	Exits       map[string]*GameRoom
+}
+
 type GameCommand struct {
 	Cmd     string
 	Aliases []string
-	Action  func(arguments []string) ([]byte, error)
+	Action  func(action string, arguments []string) string
 }
 
 type GameState struct {
 	Commands []GameCommand
+	Rooms    []GameRoom
+
+	CurrentRoom *GameRoom
 }
 
 func NewGameState() *GameState {
-	state := &GameState{
-		Commands: []GameCommand{
-			{
-				Cmd:     "help",
-				Aliases: []string{"h", "?"},
-				Action: func(arguments []string) ([]byte, error) {
-					return []byte("TBD"), nil
-				},
+	state := &GameState{}
+
+	state.Commands = []GameCommand{
+		{
+			Cmd:     "help",
+			Aliases: []string{"h", "?"},
+			Action: func(action string, arguments []string) string {
+				return "TBD"
+			},
+		},
+		{
+			Cmd:     "look",
+			Aliases: []string{},
+			Action: func(action string, arguments []string) string {
+				return state.CurrentRoom.Description
 			},
 		},
 	}
+
+	state.Rooms = []GameRoom{
+		{
+			Brief:       "You're in a small jail cell.",
+			Description: "long description",
+			// Items, doors, monsters?
+			Exits: map[string]*GameRoom{},
+		},
+	}
+
+	state.CurrentRoom = &state.Rooms[0]
+
 	return state
 }
 
-func (s *GameState) InterpretCommand(action string, arguments []string) ([]byte, error) {
+func (s *GameState) InterpretCommand(action string, arguments []string) (string, error) {
 	for _, cmd := range s.Commands {
 		matched := false
 		if cmd.Cmd == action {
@@ -58,11 +86,17 @@ func (s *GameState) InterpretCommand(action string, arguments []string) ([]byte,
 		}
 
 		if matched {
-			return cmd.Action(arguments)
+			return cmd.Action(action, arguments), nil
 		}
 	}
 
-	return nil, ErrUnrecognizedCommand
+	return "", ErrUnrecognizedCommand
+}
+
+func (s *GameState) WriteCurrentRoomBrief(w *bufio.Writer) {
+	w.Write([]byte(s.CurrentRoom.Brief))
+	// Write exits
+	w.Flush()
 }
 
 func spawnGame(conn net.Conn) {
@@ -73,7 +107,8 @@ func spawnGame(conn net.Conn) {
 	w := bufio.NewWriter(conn)
 	r := bufio.NewReader(conn)
 
-	w.Write([]byte("The Dungeon\r\n==========="))
+	w.Write([]byte("The Dungeon\r\n===========\r\n\r\n"))
+	state.WriteCurrentRoomBrief(w)
 	w.Write(gamePrompt)
 	w.Flush()
 
@@ -83,7 +118,7 @@ func spawnGame(conn net.Conn) {
 	for {
 		n, err := r.Read(buffer)
 		if err != nil {
-			log.Println("could not read from client, ", err)
+			log.Println("could not read from client,", err)
 			return
 		} else if n <= 0 {
 			continue
@@ -94,7 +129,7 @@ func spawnGame(conn net.Conn) {
 			cmd := make([]byte, 2)
 			n, err := r.Read(cmd)
 			if n <= 0 || err != nil {
-				log.Println("could not read cmd from client, ", err)
+				log.Println("could not read cmd from client,", err)
 				return
 			}
 			log.Println("cmd: ", cmd)
@@ -118,15 +153,13 @@ func spawnGame(conn net.Conn) {
 
 				output, err := state.InterpretCommand(action, arguments)
 				if err != nil {
-					log.Println("could not interpret", err)
+					log.Printf("could not interpret \"%s\", %s", action, err)
 
 					if err == ErrUnrecognizedCommand {
 						w.Write([]byte("Sorry, I don't know how to '" + action + "'..."))
 					}
 				} else {
-					if output != nil {
-						w.Write(output)
-					}
+					w.Write([]byte(output))
 				}
 				w.Write([]byte("\r\n"))
 			}
@@ -167,7 +200,7 @@ func serveWeb() {
 	})
 	err := http.ListenAndServe(":80", nil)
 	if err != nil {
-		log.Fatal("could not start server, ", err)
+		log.Fatal("could not start server,", err)
 	}
 }
 
