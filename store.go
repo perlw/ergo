@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 
-	"github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/pkg/errors"
 	//"github.com/satori/go.uuid"
 )
@@ -20,5 +20,5 @@ func NewStore() (*Store, error) {
 
 	return &Store{
 		db: db,
-	}
+	}, nil
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net"
@@ -21,7 +22,7 @@ func serveGame() {
 
 func serveWeb() {
 	http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
-		w.Write("foo")
+		w.Write([]byte("foo"))
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -47,10 +48,11 @@ func main() {
 	if err != nil {
 		log.Fatalln("could not set up store", err)
 	}
+	fmt.Println(store)
 
 	go serveGame()
 	go serveWeb()
 
-	var forever chan int = nil
+	var forever chan int
 	<-forever
 }
