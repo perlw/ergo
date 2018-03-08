@@ -21,7 +21,7 @@ func serveGame() {
 }
 
 func serveWeb() {
-	http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("foo"))
 	})
 
