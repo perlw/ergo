@@ -21,11 +21,14 @@ func serveGame() {
 }
 
 func serveWeb() {
-	http.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
+	apiMux := http.NewServeMux()
+	apiMux.HandleFunc("/note", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("foo"))
 	})
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+	mux.Handle("/api/", apiMux)
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		t, err := template.ParseFiles("index.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -35,7 +38,7 @@ func serveWeb() {
 		t.Execute(w, nil)
 	})
 
-	err := http.ListenAndServe(":80", nil)
+	err := http.ListenAndServe(":80", mux)
 	if err != nil {
 		log.Fatal("could not start server,", err)
 	}
