@@ -71,8 +71,6 @@ func (a GoAction) Do(state *GameState, w *bufio.Writer) {
 			state.CurrentRoom = &state.Rooms[idx]
 
 			state.WriteCurrentRoomBrief(w)
-			w.Write(gamePrompt)
-			w.Flush()
 		}
 	}
 }
