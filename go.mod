@@ -1,4 +1,4 @@
-module "github.com/perlw/me"
+module "github.com/perlw/ergo"
 
 require (
 	"github.com/mattn/go-sqlite3" v1.6.0
