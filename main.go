@@ -26,10 +26,6 @@ func serveGame() {
 type middlewareFunc func(routeFunc) routeFunc
 type routeFunc func(http.ResponseWriter, *http.Request, context.Context) error
 
-func noopHandler(w http.ResponseWriter, r *http.Request, ctx context.Context) error {
-	return nil
-}
-
 // Define own writer?
 func baseRoute(method string, handler routeFunc, funcs ...middlewareFunc) http.HandlerFunc {
 	handler = func() routeFunc {
@@ -95,7 +91,7 @@ func withJsonBody() middlewareFunc {
 }
 
 func serveWeb() {
-	// Note mangements
+	// Note mangement
 	http.HandleFunc("/api/note", baseRoute("POST", func(w http.ResponseWriter, r *http.Request, ctx context.Context) error {
 		var note struct {
 			Note string `json:"note"`

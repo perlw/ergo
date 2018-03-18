@@ -16,10 +16,41 @@ var (
 
 var gamePrompt = []byte("\r\n> ")
 
+type ExitDir int
+
+func (e ExitDir) String() string {
+	switch e {
+	case ExitDirN:
+		return "north"
+	case ExitDirE:
+		return "east"
+	case ExitDirS:
+		return "south"
+	case ExitDirW:
+		return "west"
+	}
+	return "unk"
+}
+
+const (
+	ExitDirN ExitDir = iota
+	ExitDirE
+	ExitDirS
+	ExitDirW
+)
+
+type RoomExit struct {
+	TargetX int
+	TargetY int
+	Open    bool
+}
+
 type GameRoom struct {
 	Brief       string
 	Description string
-	Exits       map[string]*GameRoom
+	PosX        int
+	PosY        int
+	Exits       map[ExitDir]RoomExit
 }
 
 type GameCommand struct {
@@ -53,14 +84,29 @@ func NewGameState() *GameState {
 				return state.CurrentRoom.Description
 			},
 		},
+		{
+			Cmd:     "go",
+			Aliases: []string{"enter"},
+			Action: func(action string, arguments []string) string {
+				return "TBD"
+			},
+		},
 	}
 
 	state.Rooms = []GameRoom{
 		{
 			Brief:       "You're in a small jail cell.",
 			Description: "long description",
+			PosX:        0,
+			PosY:        0,
 			// Items, doors, monsters?
-			Exits: map[string]*GameRoom{},
+			Exits: map[ExitDir]RoomExit{
+				ExitDirN: {
+					TargetX: 0,
+					TargetY: 1,
+					Open:    false,
+				},
+			},
 		},
 	}
 
