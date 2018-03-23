@@ -12,7 +12,7 @@ import (
 )
 
 func serveGame() {
-	ln, err := net.Listen("tcp", ":23")
+	ln, err := net.Listen("tcp", ":3000")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -117,7 +117,7 @@ func serveWeb() {
 		t.Execute(w, nil)
 	})
 
-	err := http.ListenAndServe(":80", nil)
+	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
 		log.Fatal("could not start server,", err)
 	}
