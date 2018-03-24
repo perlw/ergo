@@ -6,22 +6,9 @@ import (
 	"errors"
 	"html/template"
 	"log"
-	"net"
 	"net/http"
 	"time"
 )
-
-func serveGame() {
-	ln, err := net.Listen("tcp", ":3000")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for {
-		conn, _ := ln.Accept()
-		go spawnGame(conn)
-	}
-}
 
 type middlewareFunc func(routeFunc) routeFunc
 type routeFunc func(http.ResponseWriter, *http.Request, context.Context) error
@@ -132,7 +119,6 @@ func main() {
 	}
 	log.Println(store)
 
-	go serveGame()
 	go serveWeb()
 
 	var forever chan int
