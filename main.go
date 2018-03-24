@@ -104,7 +104,7 @@ func serveWeb() {
 		t.Execute(w, nil)
 	})
 
-	err := http.ListenAndServe(":8000", nil)
+	err := http.ListenAndServe(":8001", nil)
 	if err != nil {
 		log.Fatal("could not start server,", err)
 	}
