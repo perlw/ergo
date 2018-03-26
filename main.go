@@ -81,15 +81,17 @@ func withJsonBody() middlewareFunc {
 }
 
 func main() {
-	log.Println("┌starting up")
-	cfg, err := ini.Load("ergo.ini")
-	if err != nil {
-		log.Fatalln(errors.Wrap(err, "├could not read config"))
-	}
-	cfg.BlockMode = false
+	port := 8001
 
-	section := cfg.Section(ini.DEFAULT_SECTION)
-	port := section.Key("port").MustInt(1337)
+	log.Println("┌starting up")
+	if cfg, err := ini.Load("ergo.ini"); err != nil {
+		log.Println(errors.Wrap(err, "├could not read config"))
+	} else {
+		cfg.BlockMode = false
+
+		section := cfg.Section(ini.DEFAULT_SECTION)
+		port = section.Key("port").MustInt(8001)
+	}
 
 	store, err := NewStore()
 	if err != nil {
