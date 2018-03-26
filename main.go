@@ -3,11 +3,14 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"errors"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/go-ini/ini"
+	"github.com/pkg/errors"
 )
 
 type middlewareFunc func(routeFunc) routeFunc
@@ -77,9 +80,26 @@ func withJsonBody() middlewareFunc {
 	}
 }
 
-func serveWeb() {
+func main() {
+	log.Println("┌starting up")
+	cfg, err := ini.Load("ergo.ini")
+	if err != nil {
+		log.Fatalln(errors.Wrap(err, "├could not read config"))
+	}
+	cfg.BlockMode = false
+
+	section := cfg.Section(ini.DEFAULT_SECTION)
+	port := section.Key("port").MustInt(1337)
+
+	store, err := NewStore()
+	if err != nil {
+		log.Fatalln("└could not set up store", err)
+	}
+	log.Println(store)
+
+	mux := http.NewServeMux()
 	// Note mangement
-	http.HandleFunc("/api/note", baseRoute("POST", func(w http.ResponseWriter, r *http.Request, ctx context.Context) error {
+	mux.HandleFunc("/api/note", baseRoute("POST", func(w http.ResponseWriter, r *http.Request, ctx context.Context) error {
 		var note struct {
 			Note string `json:"note"`
 		}
@@ -94,7 +114,7 @@ func serveWeb() {
 		return nil
 	}, withHitLogger(), withJsonBody()))
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		t, err := template.ParseFiles("index.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -104,23 +124,17 @@ func serveWeb() {
 		t.Execute(w, nil)
 	})
 
-	err := http.ListenAndServe(":8001", nil)
-	if err != nil {
-		log.Fatal("could not start server,", err)
+	server := &http.Server{
+		Addr:           fmt.Sprintf(":%d", port),
+		Handler:        mux,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
 	}
-}
 
-func main() {
-	log.Println("Launching... well.. me")
-
-	store, err := NewStore()
+	log.Printf("└alive @ %s", server.Addr)
+	err = server.ListenAndServe()
 	if err != nil {
-		log.Fatalln("could not set up store", err)
+		log.Fatal("└could not start server,", err)
 	}
-	log.Println(store)
-
-	go serveWeb()
-
-	var forever chan int
-	<-forever
 }
