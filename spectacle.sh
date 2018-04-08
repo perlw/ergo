@@ -10,10 +10,10 @@ rm -rf $HOME/services/$APP
 rm -rf $APPBASE
 mkdir -p $APPBASE
 
-cp bin/$APP $HOME/services/
+cp bin/$APP $APPBASE
 cp -r static $APPBASE/
 mkdir $APPBASE/data
 cat schema.sql | sqlite3 $APPBASE/data/data.db
 
-cd $HOME/services
+cd $APPBASE
 nohup ./ergo &> ergo.log &
