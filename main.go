@@ -116,10 +116,10 @@ func main() {
 		return nil
 	}, withHitLogger(), withJsonBody()))
 
-	staticHandler := http.FileServer(http.Dir("."))
+	staticHandler := http.FileServer(http.Dir("static/"))
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {
-			t, err := template.ParseFiles("index.html")
+			t, err := template.ParseFiles("static/index.html")
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return

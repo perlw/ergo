@@ -1,11 +1,19 @@
 #!/bin/sh
-go get -u golang.org/x/vgo &> goget.log
-$GOPATH/bin/vgo build -o bin/ergo &> build.log
+APP=ergo
+APPBASE=$HOME/services/ergo
 
-pkill ergo
-cp bin/ergo $HOME/services/
-cp -r index.html $HOME/services/
-mkdir $HOME/services/data
-cat schema.sql | sqlite3 $HOME/services/data/data.db
+go get -u golang.org/x/vgo &> goget.log
+$GOPATH/bin/vgo build -o bin/$APP &> build.log
+
+pkill $APP
+rm -rf $HOME/services/$APP
+rm -rf $APPBASE
+mkdir -p $APPBASE
+
+cp bin/$APP $HOME/services/
+cp -r static $APPBASE/
+mkdir $APPBASE/data
+cat schema.sql | sqlite3 $APPBASE/data/data.db
+
 cd $HOME/services
 nohup ./ergo &> ergo.log &
