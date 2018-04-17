@@ -1,6 +1,6 @@
 #!/bin/sh
 APP=ergo
-APPBASE=$HOME/services/ergo
+APPBASE=$HOME/services/$APP
 
 go get -u golang.org/x/vgo &> goget.log
 $GOPATH/bin/vgo build -o bin/$APP &> build.log
@@ -16,4 +16,4 @@ mkdir $APPBASE/data
 cat schema.sql | sqlite3 $APPBASE/data/data.db
 
 cd $APPBASE
-nohup ./ergo &> ergo.log &
+nohup ./$APP &> $APP.log &
