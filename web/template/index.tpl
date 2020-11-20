@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-	<link rel="icon" type="image/png" href="/logo.png" />
-	<link rel="apple-touch-icon-precomposed" type="image/png" href="/logo.png" />
+	<link rel="icon" type="image/png" href="/static/logo.png" />
+	<link rel="apple-touch-icon-precomposed" type="image/png" href="/static/logo.png" />
 
 	<head>
 		<meta charset="UTF-8">
