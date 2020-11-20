@@ -17,7 +17,7 @@ func main() {
 	var webBaseDir string
 
 	flag.StringVar(
-		&webBaseDir, "web-base-dir", "./web", "sets the base dir of the webapp",
+		&webBaseDir, "web-base-dir", "./", "sets the base dir of the webapp",
 	)
 	flag.IntVar(&port, "port", 80, "set port to use")
 	flag.Parse()
