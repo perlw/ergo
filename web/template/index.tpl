@@ -39,13 +39,13 @@
 			</div>
 
 			<p class="h-card">
-				<img class="u-photo" src="/me.png" alt="photo of Per Lönn Wege" />
+				<img class="u-photo" src="/static/me.png" alt="photo of Per Lönn Wege" />
 				<a class="p-name u-url" href="https://perlw.se">Per Lönn Wege</a>
 				<a class="u-email" href="mailto:per@perlw.se">per@perlw.se</a>
 			</p>
 
 			<p class="external">
-				<a href="https://github.com/perlw" rel="me"><img src="https://assets-cdn.github.com/favicon.ico" alt="github logo" /></a>
+				<a href="https://github.com/perlw" rel="me"><img src="https://github.githubassets.com/favicons/favicon-dark.png" alt="github logo" /></a>
 				<a href="https://keybase.io/perlw" rel="me"><img src="https://keybase.io/images/icons/icon-keybase-logo-48.png" alt="keybase logo" /></a>
 				<a href="https://twitter.com/perlwege" rel="me"><img src="https://abs.twimg.com/favicons/favicon.ico" alt="twitter logo" /></a>
 			</p>
