@@ -2,7 +2,7 @@
 name: Build and Deploy
 
 env:
-  APP_NAME: pict
+  APP_NAME: ergo
 
 on:
   push:
