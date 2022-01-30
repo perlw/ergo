@@ -3,12 +3,14 @@
 		<li>
 			<a href="/musings">Musings</a>
 		</li>
+		<!--
 		<li>
 			<a href="/til">TIL</a>
 		</li>
 		<li>
 			<a href="/why">Why?</a>
 		</li>
+		-->
 	</ul>
 {{end}}
 
