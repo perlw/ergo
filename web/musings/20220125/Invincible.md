@@ -1,0 +1,32 @@
+So the thing about getting older (older, not old, I'm only in my 40s) is that the choices you've made the previous decades start to really show in your mind and your body. For long stretches of time I would eat mostly junk food and drinking multiple litres of soft drinks a week. For most of my life I've never been very physically active, never played any sports or had any real interest in the "outdoors". I neglected my teeth for at least 15 years, never visiting a dentist, since I never had a problem and "hey, I brush every day". And I have a fear of dentists, or rather getting into the seat and surrendering control to the people with drills and other pointy tools.
+Much of this has changed with time, of course. With time, you grow up. With time, you make different choices. With time, you see the effect your younger years have on your present life.
+I used to take the bike to work for about 2 years, a nice trip of 7.5km both ways. Must confess I've never felt better than I did back then, but I stopped due to changing circumstances with work.
+I used to go to the gym with a colleague 3 times a week. But I stopped when he left the company.
+I moved into the city to get within walking distance to work and started walking every day for almost 3 years, 2km both ways, and felt generally very healthy again. Then covid-19 struck, and I've barely left my apartment for long swatches of time. I do maintain contact with a friend by getting out on a walk together regularly, as well as doing some work on our respective projects at any nearby café if the mood strikes us, but most of my time is spent at home, indoors.
+Increasingly isolated in real life I've turned more to my distant relationships, rekindling some (I'll always look out for you little bro), losing others (sorry "dad"), and keeping others strong (my friend, deeper than any blood). I've never been part of any online social networks, and in an increasingly isolated world I've definitely felt lonely.
+But, I've survived. I've not had an exceptionally healthy lifestyle, but I'm alive and well. I cook my own food, I've stopped eating candies, occasionally indulging in crisps but staying away from sugars when I can, eating less meat (tho I'm by no means a vegetarian). I'm slightly overweight. I don't smoke, never tried and never will. I rarely drink (although it can get out of hand in the right company when it happens).
+I'm very rarely sick, I get some kind of flu maybe twice a year and I have congenital migraines, and I've never had covid-19.
+
+So, mostly healthy, not terribly overweight but not fit, lonely but generally strong of mind. What's the problem?
+
+I finally realised I'm not invincible. Having never had any ailments, never been very sick (the most I can remember is a strong case of the flu _once_), insecure but mentally sound, sometimes strained neck and back but avoided actual damage from the work I do professionally as a developer and codemonkey.. well, it's easy to tell yourself you'll never actually get hurt, or be injured, or get sick, since somehow magically you're exempt from worrying about this.
+For me, the turning point happened just recently, just months ago in November, when I felt a sharp pain in a tooth I knew had been chipped months before. I'd never felt anything from it before, and I do take care of my dental hygiene, I thought, so therefore all is well. Until the pain. So I reluctantly accepted the problem and hurried to the dentist, luckily getting an appointment early the following day.
+The news was dire. The chip was close to the root, and my options were either a root canal or simply removing the tooth. Both, of course, sounded horrible to me. They patched me up with a temporary fix and sent me home with a new appointment the following month. This prevented the pain, thankfully, but did nothing to my worries and I spent far too much time googling this and that related to both root canals and teeth removal.
+When the time finally came I opted for simply pulling the tooth, believing it to be the easier solution. Yes, I chickened out, choosing a destructive option instead of fixing it.
+And I paid the price for it. The following week I barely ate anything out of fear that it would mess up the healing. I lost weight, having barely any appetite, only eating out of the fact that I knew I need sustenance, but very tiny portions. It took about 2 weeks before I was reasonably sure it would be okay to start eating for real again.
+Work tanked during all of this, barely getting any work done for about 2 months out fear and anxiety, and I'm eternally grateful for my boss' and coworkers' understanding.
+I've finally recovered most of my wits. I don't feel any pain any more and don't need to take painkillers 3 times a day. I'm 100% back at work and cranking out code.
+And then I visited the dentist again for a follow up appointment, more general, to explore what else needs to be done since I've been neglecting my teeth for so long, and well, the results were depressing. Several small holes need to be fixed. A molar has a crack in it. Another molar is basically crushed but holding together. I don't feel anything from any of this, and so it's been easy to ignore.
+I have 4 new dentist appointments booked now, all within a week of each other. It's going to be hectic, will strain my fears, and will be expensive to fix all at once, but it needs to be done.
+
+So what's the take away from all this? Honestly, for anyone reading this, probably not much. But for me, it reminded me that I'm not invincible. That everything you do have consequences over enough time, no matter how small.
+And, that it's not too late to fix it. To become more mindful. To listen to yourself, to take care of yourself. It's easy to forget in today's increasingly online world that there's a real life as well.
+I'm not talking about living "out there", but don't forget that you, yourself, exists in the real world. You can not ignore yourself, no matter how much you think that everything will just "be fine".
+
+So, I've spent a lot of time thinking. Small steps at first, making sure to have the right kinds of tools at home to take care my dental hygiene. Making it routine.
+Looking around I see several things in my vicinity I need to do something about, from the apartment to health to mental wellness.
+And, I guess, with small steps and time, I will get there eventually.
+
+That's all it takes. Steps, and time.
+
+FIN.
