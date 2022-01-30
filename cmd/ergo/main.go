@@ -1,17 +1,21 @@
 package main
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"html/template"
 	"io/fs"
 	"io/ioutil"
 	"log"
+	"math"
 	"net/http"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 
@@ -104,6 +108,97 @@ func parameterize(format, path string) (map[string]string, error) {
 	return nil, fmt.Errorf("invalid-params: expected %s got %s", format, path)
 }
 
+type WakaAPIStatsBlock struct {
+	Decimal      string
+	Digital      string
+	Hours        int
+	Minutes      int
+	Name         string
+	Percent      float64
+	Seconds      int
+	Text         string
+	TotalSeconds float64 `json:"total_seconds"`
+}
+
+var wakatimeMutex sync.RWMutex
+var wakatimeStats struct {
+	CummulativeTotal struct {
+		Decimal string
+		Digital string
+		Seconds float64
+		Text    string
+	} `json:"cummulative_total"`
+	Data []struct {
+		Categories   []WakaAPIStatsBlock
+		Dependencies []WakaAPIStatsBlock
+		Editors      []WakaAPIStatsBlock
+		GrandTotal   struct {
+			Decimal      string
+			Digital      string
+			Hours        int
+			Minutes      int
+			Text         string
+			TotalSeconds float64 `json:"total_seconds"`
+		} `json:"grand_total"`
+		Languages        []WakaAPIStatsBlock
+		Machines         []WakaAPIStatsBlock
+		OperatingSystems []WakaAPIStatsBlock `json:"operating_systems"`
+		Projects         []WakaAPIStatsBlock
+		Range            struct {
+			Date     string
+			End      time.Time
+			Start    time.Time
+			Text     string
+			Timezone string
+		}
+	}
+}
+
+func runWakatimeUpdate(apikeyb64 string, logger *log.Logger) error {
+	logger.Println("Updating wakatime stats...")
+	req, err := http.NewRequest(http.MethodGet, "https://wakatime.com/api/v1/users/current/summaries?range=Last%207%20Days", nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Basic "+apikeyb64)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	wakatimeMutex.Lock()
+	err = json.NewDecoder(resp.Body).Decode(&wakatimeStats)
+	if err != nil {
+		return err
+	}
+	wakatimeMutex.Unlock()
+
+	return nil
+}
+
+var wakatimeStatsOn bool
+
+func wakatimeStatsUpdater(apikey string, logger *log.Logger) {
+	apikeyb64 := base64.StdEncoding.EncodeToString([]byte(apikey))
+	if err := runWakatimeUpdate(apikeyb64, logger); err != nil {
+		logger.Println("Could not initialize wakatime stats:", err)
+		wakatimeStatsOn = false
+		return
+	}
+
+	ticker := time.NewTicker(time.Hour * 24)
+	for range ticker.C {
+		if err := runWakatimeUpdate(apikeyb64, logger); err != nil {
+			logger.Println("Could not update wakatime stats:", err)
+			wakatimeStatsOn = false
+			return
+		}
+	}
+}
+
 func main() {
 	var port int
 	var webBaseDir string
@@ -154,13 +249,52 @@ func main() {
 		return nil
 	})
 
+	for _, env := range os.Environ() {
+		parts := strings.Split(env, "=")
+		if parts[0] == "WAKATIME_APIKEY" {
+			go wakatimeStatsUpdater(parts[1], logger)
+			wakatimeStatsOn = true
+			break
+		}
+	}
+	if !wakatimeStatsOn {
+		logger.Println("WARN: No WAKATIME_APIKEY in env, skipping wakatimeStatsUpdater.")
+	}
+
 	mux := http.NewServeMux()
 
 	fs := http.FileServer(http.Dir(webBaseDir + "static/"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		if err := pageTmpls["home"].Execute(w, nil); err != nil {
+		var err error
+		if wakatimeStatsOn {
+			var totalSeconds float64
+			wakaSeconds := make(map[string]float64)
+			wakaPercentage := make(map[string]int)
+			wakatimeMutex.RLock()
+			for _, data := range wakatimeStats.Data {
+				for _, lang := range data.Languages {
+					if _, ok := wakaSeconds[lang.Name]; !ok {
+						wakaSeconds[lang.Name] = 0
+					}
+					wakaSeconds[lang.Name] += lang.TotalSeconds
+					totalSeconds += lang.TotalSeconds
+				}
+			}
+			wakatimeMutex.RUnlock()
+
+			for k, v := range wakaSeconds {
+				wakaPercentage[k] = int(math.Ceil((v / totalSeconds) * 100.0))
+			}
+
+			err = pageTmpls["home"].Execute(w, map[string]interface{}{
+				"wakaStats": wakaPercentage,
+			})
+		} else {
+			err = pageTmpls["home"].Execute(w, nil)
+		}
+		if err != nil {
 			logger.Println("ERR:", err)
 			http.Error(w, "cat on keyboard", http.StatusInternalServerError)
 		}

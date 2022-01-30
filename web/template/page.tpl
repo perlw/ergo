@@ -41,6 +41,10 @@
 			padding-left: 1em;
 			margin: 0;
 		}
+
+		.wakastats {
+			font-size: 0.75em;
+		}
 		</style>
 	</head>
 	<body>

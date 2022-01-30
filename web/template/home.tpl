@@ -16,4 +16,17 @@
 
 {{define "section_content"}}
 This site is about me. It is me. This is me. I am here and this is where you found me.
+
+{{if .wakaStats}}
+
+<hr />
+
+<div class="wakastats">
+Latest 7 days:&nbsp;
+{{range $k,$v := .wakaStats}}
+{{$k}}:{{$v}}%&nbsp;
+{{end}}
+</div>
+{{end}}
+
 {{end}}
