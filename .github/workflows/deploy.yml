@@ -18,7 +18,7 @@ jobs:
     - name: Build the Docker image
       run: |
         docker build . --build-arg wakatime_apikey=${{ secrets.WAKATIME_APIKEY }} \
-				  --file Dockerfile --tag $APP_NAME:latest --tag $APP_NAME:${{ github.sha }}
+          --file Dockerfile --tag $APP_NAME:latest --tag $APP_NAME:${{ github.sha }}
         docker save $APP_NAME:latest | gzip > image.tar.gz
     - name: Deploy Docker image
       shell: bash
