@@ -44,8 +44,8 @@
 			padding: 16px;
 			background-color: #fff;
 			box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.1);
-			border-radius: 8px;
-			border: 1px solid #ddf;
+			border-radius: 8px 8px 4px 4px;
+			border-top: 2px solid #fa0;
 		}
 
 		.h-card img {
