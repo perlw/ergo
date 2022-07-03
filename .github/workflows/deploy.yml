@@ -6,28 +6,47 @@ env:
 
 on:
   push:
-    branch:
-      - master
+    branches:
+      - main
 
 jobs:
-  deploy:
-    name: Build dockerfile and deploy
+  build:
+    name: Build Docker image
     runs-on: ubuntu-latest
+    outputs:
+      dockerimage:
     steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: |
-        docker build . --build-arg wakatime_apikey=${{ secrets.WAKATIME_APIKEY }} \
-          --file Dockerfile --tag $APP_NAME:latest --tag $APP_NAME:${{ github.sha }}
-        docker save $APP_NAME:latest | gzip > image.tar.gz
-    - name: Deploy Docker image
-      shell: bash
-      env:
-        SSH_HOST: ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
-      run: |
-        echo "${{ secrets.SSH_KEY }}" > ./key
-        chmod 0600 ./key
-        scp -o StrictHostKeyChecking=no -i ./key \
-          image.tar.gz $SSH_HOST:images/$APP_NAME.tar.gz
-        ssh -o StrictHostKeyChecking=no -i ./key $SSH_HOST \
-          'bash -s' < ci/deploy.sh
+      - uses: actions/checkout@v3
+      - name: Build Docker image
+        run: |
+          docker build . --build-arg wakatime_apikey=${{ secrets.WAKATIME_APIKEY }} \
+            --file Dockerfile --tag $APP_NAME:latest --tag $APP_NAME:${{ github.sha }}
+          docker save $APP_NAME:latest | gzip > image.tar.gz
+      - name: Store Docker image
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-artifact
+          path: image.tar.gz
+          retention-days: 1
+
+  deploy:
+    name: Deploy Docker image
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - name: Retrieve Docker image
+        uses: actions/download-artifact@v3
+        with:
+          name: docker-artifact
+      - name: Deploy Docker image
+        shell: bash
+        env:
+          SSH_HOST: ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > ./key
+          chmod 0600 ./key
+          scp -o StrictHostKeyChecking=no -i ./key \
+            image.tar.gz $SSH_HOST:images/$APP_NAME.tar.gz
+          ssh -o StrictHostKeyChecking=no -i ./key $SSH_HOST \
+            'bash -s' < cd/deploy.sh
