@@ -236,9 +236,9 @@ func main() {
 		}
 
 		if !d.IsDir() && filepath.Ext(path) == ".md" {
-			parts := strings.Split(path, "/")
+			parts := strings.Split(path, string(os.PathSeparator))
 			date := parts[len(parts)-2]
-			title := strings.TrimRight(parts[len(parts)-1], ".md")
+			title := strings.TrimRight(parts[len(parts)-1], "md")
 			ident := date + "_" + title
 			musings[ident] = path
 			if _, ok := musingLinks[date]; !ok {

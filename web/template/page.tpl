@@ -76,9 +76,9 @@
 
 				<hr />
 
-				<div class="section_content">
+				<section class="section_content">
 					{{template "section_content" .}}
-				</div>
+				</section>
 
 				<hr />
 
