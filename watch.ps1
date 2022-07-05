@@ -41,8 +41,8 @@ Function Register-Watcher {
         $knownFiles[$path] = $changedAt
 
         Write-Host "Updated: $path"
-        Write-Host "Ergo stopped!"
         Stop-Process -Name ergo
+        Write-Host "Ergo stopped!"
         if ($path -like "*.go") {
           Write-Host "Rebuilding Ergo..."
           go build -o .\bin\ergo.exe .\cmd\ergo
