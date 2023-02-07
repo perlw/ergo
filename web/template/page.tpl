@@ -19,7 +19,8 @@
 		hr {
       border: 0;
       border-top: 2px solid #ddf;
-      margin: 0 4em;
+      max-width: 75ch;
+      margin: 0 auto;
 		}
 
     a {
@@ -77,6 +78,9 @@
 
     .sections {
       padding-bottom: 1em;
+      max-width: 75ch;
+      margin: 0 auto;
+      line-height: 130%;
     }
 
 		.section_list {
@@ -86,10 +90,16 @@
 
     .section_content {
       padding: 1em 0;
+      max-width: 75ch;
+      margin: 0 auto;
+      line-height: 130%;
     }
 
     .section_footer {
       padding-top: 1em;
+      max-width: 75ch;
+      margin: 0 auto;
+      line-height: 130%;
     }
 
 		.wakastats {
