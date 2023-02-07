@@ -10,7 +10,8 @@
 
 		<style>
 		body {
-			background-color: #fafaff;
+			background-color: #f2f2f2;
+			color: #222;
 			margin: 0;
 			padding: 0;
 		}
@@ -36,7 +37,7 @@
 			position: absolute;
 			width: 100%;
 			height: 64px;
-			background-color: #aaf;
+			background-color: #88c;
 			padding: 0;
 			margin: 0;
 		}
@@ -54,10 +55,10 @@
 			max-width: 960px;
 			margin: 0 auto;
 			padding: 1em;
-			background-color: #fff;
-			box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.1);
+			background-color: #fefefe;
+			box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 			border-radius: 8px 8px 4px 4px;
-			border-top: 2px solid #fa0;
+			border-top: 4px solid #fa0;
 		}
 
 		.h-card img {
