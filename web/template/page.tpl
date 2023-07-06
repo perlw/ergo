@@ -132,8 +132,6 @@
 
           <p class="external">
             <a href="https://github.com/perlw" rel="me"><img src="/static/external/GitHub-Mark-32px.png" alt="github logo" /></a>
-            <a href="https://keybase.io/perlw" rel="me"><img src="/static/external/Keybase_logo_official.png" alt="keybase logo" /></a>
-            <a href="https://twitter.com/perlwege" rel="me"><img src="/static/external/Twitter social icons-circle-blue.png" alt="twitter logo" /></a>
           </p>
         </section>
 			</div>
