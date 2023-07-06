@@ -62,5 +62,3 @@ Changing me.
 
 Who knows, maybe I'll end up back in vim again. Or maybe I won't.
 But I hope that, whatever the future brings, I'll at least have a new perspective on things.
-
-FIN

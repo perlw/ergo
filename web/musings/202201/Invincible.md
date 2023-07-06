@@ -28,5 +28,3 @@ Looking around I see several things in my vicinity I need to do something about,
 And, I guess, with small steps and time, I will get there eventually.
 
 That's all it takes. Steps, and time.
-
-FIN.
