@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine
+FROM golang:1.20-alpine
 WORKDIR /src
 ADD ./ ./
 ADD ./web/static /app/static
@@ -8,7 +8,9 @@ RUN go build -o /app/ergo ./cmd/ergo
 
 FROM alpine:latest
 EXPOSE 80
+ARG build_date
 ARG wakatime_apikey
+ENV BUILD_DATE=$build_date
 ENV WAKATIME_APIKEY=$wakatime_apikey
 COPY --from=0 /app/ergo /app/ergo
 COPY --from=0 /app/static /app/static

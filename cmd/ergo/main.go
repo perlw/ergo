@@ -226,6 +226,8 @@ func main() {
 	pageTmpls["musings"] = template.Must(template.ParseFiles(webBaseDir+"template/page.tpl", webBaseDir+"template/musings.tpl"))
 	pageTmpls["musing"] = template.Must(template.ParseFiles(webBaseDir+"template/page.tpl", webBaseDir+"template/musing.tpl"))
 	pageTmpls["why"] = template.Must(template.ParseFiles(webBaseDir+"template/page.tpl", webBaseDir+"template/why.tpl"))
+	pageTmpls["robots"] = template.Must(template.ParseFiles(webBaseDir + "template/robots.tpl"))
+	pageTmpls["humans"] = template.Must(template.ParseFiles(webBaseDir + "template/humans.tpl"))
 
 	musings = make(map[string]string)
 	cachedMusings = make(Cache)
@@ -249,13 +251,17 @@ func main() {
 		return nil
 	})
 
+	var buildDate string
 	for _, env := range os.Environ() {
 		parts := strings.Split(env, "=")
-		if parts[0] == "WAKATIME_APIKEY" {
+		if parts[0] == "BUILD_DATE" {
+			buildDate = parts[1]
+		}
+		/*if parts[0] == "WAKATIME_APIKEY" {
 			go wakatimeStatsUpdater(parts[1], logger)
 			wakatimeStatsOn = true
 			break
-		}
+		}*/
 	}
 	if !wakatimeStatsOn {
 		logger.Println("WARN: No WAKATIME_APIKEY in env, skipping wakatimeStatsUpdater.")
@@ -294,6 +300,26 @@ func main() {
 		} else {
 			err = pageTmpls["home"].Execute(w, nil)
 		}
+		if err != nil {
+			logger.Println("ERR:", err)
+			http.Error(w, "cat on keyboard", http.StatusInternalServerError)
+		}
+	})
+
+	mux.HandleFunc("/robots.txt", func(w http.ResponseWriter, req *http.Request) {
+		err := pageTmpls["robots"].Execute(w, struct{}{})
+		if err != nil {
+			logger.Println("ERR:", err)
+			http.Error(w, "cat on keyboard", http.StatusInternalServerError)
+		}
+	})
+
+	mux.HandleFunc("/humans.txt", func(w http.ResponseWriter, req *http.Request) {
+		err := pageTmpls["humans"].Execute(w, struct {
+			BuildDate string
+		}{
+			BuildDate: buildDate,
+		})
 		if err != nil {
 			logger.Println("ERR:", err)
 			http.Error(w, "cat on keyboard", http.StatusInternalServerError)

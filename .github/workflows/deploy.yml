@@ -17,9 +17,15 @@ jobs:
       dockerimage:
     steps:
       - uses: actions/checkout@v3
+      - name: Get current date
+        id: get_date
+        run: |
+          echo "build_date=$(date +'%Y/%m/%d')" >> $GITHUB_OUTPUT
       - name: Build Docker image
         run: |
-          docker build . --build-arg wakatime_apikey=${{ secrets.WAKATIME_APIKEY }} \
+          docker build . \
+            --build-arg wakatime_apikey=${{ secrets.WAKATIME_APIKEY }} \
+            --build-arg build_date=${{ steps.get_date.outputs.build_date }} \
             --file Dockerfile --tag $APP_NAME:latest --tag $APP_NAME:${{ github.sha }}
           docker save $APP_NAME:latest | gzip > image.tar.gz
       - name: Store Docker image
